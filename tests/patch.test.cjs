@@ -97,7 +97,7 @@ test('malformed archive bounds are rejected',t=>{
 test('release renderer compiles and English controls retain the settings integration',()=>{
   const renderer=fs.readFileSync(path.join(project,'src','glass-renderer.js'),'utf8');
   assert.doesNotThrow(()=>new vm.Script('('+renderer+')'));
-  assert.match(renderer,/Workspace transparency/);assert.match(renderer,/mountSettingsGlass\(\)/);
+  assert.match(renderer,/Body transparency/);assert.match(renderer,/mountSettingsGlass\(\)/);
   const css=fs.readFileSync(path.join(project,'src','glass.css'),'utf8');
   assert.match(css,/html\.lg-enabled \[data-lg-settings-shell\]/);assert.match(css,/\[role="tooltip"\]/);
 });

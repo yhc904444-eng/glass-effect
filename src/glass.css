@@ -442,3 +442,33 @@ html.lg-enabled [data-lg-settings-shell] [data-lg-settings-control] :is([class*=
 html.lg-enabled [data-lg-settings-shell] [data-lg-settings-control] [class*="_DropdownIcon_"]{color:inherit!important}
 /* Native select overlays remain invisible so the glass facade is the only coat. */
 html.lg-enabled [data-lg-settings-shell] [data-native-selectcontrol]{background:transparent!important}
+
+
+/* v19: join permanent panes; preserve floating composers, cards and popups. */
+html.lg-enabled [data-app-shell-frame="true"]{padding:0!important;gap:0!important;--app-shell-titlebar-top-inset:0px!important}
+/* Paint a single coat, so the permanent sidebar cannot add extra opacity. */
+html.lg-enabled [data-app-shell-frame="true"]{
+ border-radius:var(--lg-window-radius);
+ background-color:rgba(var(--lg-pane-rgb),var(--lg-workspace-alpha))!important;
+ background-image:linear-gradient(145deg,#ffffff12,transparent 38%,#c2e8ff06 74%,#ffffff0a)!important;
+}
+html.lg-enabled[data-lg-scene] [data-app-shell-frame="true"]{background-color:rgba(13,34,51,calc(.09 + var(--lg-workspace-alpha)*.55))!important}
+html.lg-enabled :is([data-lg-layout-surface="workspace"],[data-lg-layout-surface="sidebar"],[data-lg-layout-surface="rail"],[data-lg-layout-surface="topbar"]):not([data-lg-floating-surface]),
+html.lg-enabled[data-lg-scene] :is([data-lg-layout-surface="workspace"],[data-lg-layout-surface="sidebar"],[data-lg-layout-surface="rail"],[data-lg-layout-surface="topbar"]):not([data-lg-floating-surface]),
+html.lg-enabled [data-app-shell-right-panel]:not([data-lg-floating-surface]),
+html.lg-enabled[data-lg-scene] [data-app-shell-right-panel]:not([data-lg-floating-surface]){background:transparent!important}
+html.lg-enabled .app-shell-left-panel{margin:0!important}
+html.lg-enabled .app-shell-left-panel:not([data-slate-sidebar-peeking="true"]) [data-sidebar-navigation-root]{border-radius:0!important}
+html.lg-enabled :is(main[data-app-shell-main-surface],[data-lg-settings-shell],[data-lg-layout-surface="rail"],[data-lg-layout-surface="topbar"],[data-app-shell-right-panel]),
+html.lg-enabled [data-lg-layout-surface="sidebar"]:not([data-lg-floating-surface]){
+ margin:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;
+}
+html.lg-enabled [data-lg-layout-surface="topbar"]:not([data-lg-floating-surface]){
+ border-radius:var(--lg-window-radius) var(--lg-window-radius) 0 0!important;
+ border-bottom:1px solid rgba(var(--lg-optic-rgb),.13)!important;
+}
+html.lg-enabled [data-lg-layout-surface="sidebar"]:not([data-lg-floating-surface]),
+html.lg-enabled [data-lg-layout-surface="rail"]:not([data-lg-floating-surface]){
+ border-right:1px solid rgba(var(--lg-optic-rgb),.10)!important;
+}
+html.lg-enabled [data-app-shell-right-panel]:not([data-lg-floating-surface]){border-left:1px solid rgba(var(--lg-optic-rgb),.10)!important}

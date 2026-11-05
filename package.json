@@ -1,8 +1,8 @@
 {
   "name": "glass-effect",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
-  "description": "Clear desktop glass appearance for a compatible OpenAI Codex Windows client, with independent transparency controls and animated edges.",
+  "description": "A connected clear-glass workspace for a compatible OpenAI Codex Windows client, with a floating composer and synchronized body transparency.",
   "license": "MIT",
   "engines": {
     "node": ">=18"

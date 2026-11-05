@@ -2,27 +2,29 @@
 
 **Clear desktop glass for the OpenAI Codex desktop app on Windows.**
 
-Glass Effect gives Codex a transparent desktop window, thin illuminated edges,
-and a consistent glass material across the workspace, sidebar, composer,
-settings controls, menus, tooltips, and dialogs. The desktop and other windows
-remain visible behind the app. An optional alpine lake scene provides a
-calm alternative background.
+Glass Effect gives Codex a continuous transparent desktop window with thin
+illuminated edges. The title bar, navigation rail, docked sidebar, and workspace
+connect without gaps and share one glass background. The composer remains
+an independent floating surface. The desktop and other windows remain visible
+behind the app; an optional alpine lake scene provides an alternative background.
 
 This is a standalone project with its own repository, installer, shortcuts,
 application directory, and appearance profile. It is independent of the
 earlier Frosted Glass / Codex Liquid Glass project.
 
-![Glass Effect appearance controls](https://raw.githubusercontent.com/yhc904444-eng/glass-effect/main/docs/appearance-preview.png)
+![Glass Effect connected workspace](docs/workspace-preview.png)
 
-*English appearance controls in an isolated component preview, using the
-included alpine lake scene.*
+*Connected workspace in an isolated component preview with fictional content
+and the included alpine lake scene.*
 
 ## Appearance
 
 - **Clear desktop:** native window transparency reveals the live desktop.
 - **Alpine lake:** switch to the included mountain-and-lake scene.
-- **Independent transparency:** adjust the workspace, sidebar, composer,
-  and floating panels separately.
+- **Connected shell:** the title bar, navigation rail, docked sidebar, and
+  workspace meet seamlessly, including both docked sidebar corners.
+- **Synchronized body transparency:** one control adjusts all permanent panes
+  together. The composer, peeking sidebar, and popups keep separate controls.
 - **Fine edge controls:** adjust tint, highlights, edge blur, width,
   intensity, and animation speed; turn animated edges off at any time.
 - **Consistent settings:** glass styling includes native select shells,
@@ -36,16 +38,16 @@ application; their blur setting does not blur the desktop outside it.
 
 ## Download and install
 
-Download [Glass Effect 1.0.0](https://github.com/yhc904444-eng/glass-effect/releases/tag/v1.0.0).
+Download [Glass Effect 1.1.0](https://github.com/yhc904444-eng/glass-effect/releases/tag/v1.1.0).
 
 1. Use **Windows 11 22H2 or newer, x64**, with approximately **5 GB** of free
    space and a compatible official Codex installation (see below).
-2. Open **Glass-Effect-1.0.0-Setup.exe**. Setup runs for your Windows account
+2. Open **Glass-Effect-1.1.0-Setup.exe**. Setup runs for your Windows account
    and builds a separate local copy. No development tools are required.
 3. Open **Glass Effect** from the desktop or Start menu. Sign in if prompted,
    then open **Settings > Appearance** to adjust the material.
 
-Alternatively, extract **Glass-Effect-1.0.0-Installer.zip** and double-click
+Alternatively, extract **Glass-Effect-1.1.0-Installer.zip** and double-click
 **Install.cmd**. The EXE and ZIP contain the same installation scripts and
 customization source. They do not contain the official Codex application.
 
@@ -64,7 +66,7 @@ Installation stops if the compatibility check fails.
 | --- | --- | --- |
 | 26.1016.8622.0 | 26.1016.62342 | Windows x64 |
 
-Version 1.0.0 targets this specific application build. It checks the original
+Version 1.1.0 targets this specific application build. It checks the original
 archive SHA256, the executable integrity metadata, and both native integration
 points before patching its isolated copy. Newer Codex builds are not currently
 supported; do not downgrade a working official installation to force a match.
@@ -92,6 +94,12 @@ Installed apps**, or run **Uninstall.ps1** from its installation directory.
 Uninstall keeps the isolated profile and appearance preferences. Updating
 requires uninstalling the old application copy before installing a compatible
 new release.
+
+When upgrading from 1.0.0, fully exit Glass Effect, uninstall its old application
+copy, then install 1.1.0. The existing profile and saved preference keys are kept.
+**Body transparency** uses the former workspace value for all permanent panes.
+**Floating sidebar transparency** uses the saved sidebar value only when that
+sidebar appears as a floating panel. The composer value stays independent.
 
 The customized executable's archive-integrity metadata is updated to match
 the customized archive. Archive-integrity verification stays enabled; the

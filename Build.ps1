@@ -6,7 +6,7 @@ $root = $PSScriptRoot
 $dist = Join-Path $root 'dist'
 New-Item -ItemType Directory -Path $dist -Force | Out-Null
 $version = (Get-Content -LiteralPath (Join-Path $root 'package.json') -Raw | ConvertFrom-Json).version
-$files = @('Install.cmd','Install.ps1','Launch.ps1','Uninstall.ps1','README.md','CHANGELOG.md','VALIDATION.md','LICENSE','THIRD_PARTY_NOTICES.md','compatibility.json','scripts\patch.cjs','src\glass-main.cjs','src\glass-preload.cjs','src\glass-renderer.js','src\glass.css','src\assets\alpine-lake-v11.png')
+$files = @('Install.cmd','Install.ps1','Launch.ps1','Uninstall.ps1','README.md','CHANGELOG.md','VALIDATION.md','LICENSE','THIRD_PARTY_NOTICES.md','compatibility.json','scripts\patch.cjs','src\glass-main.cjs','src\glass-preload.cjs','src\glass-renderer.js','src\glass.css','src\assets\alpine-lake-v11.png','docs\workspace-preview.png','docs\appearance-preview.png')
 Add-Type -AssemblyName System.IO.Compression
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 $payload = Join-Path $dist 'payload.zip'
