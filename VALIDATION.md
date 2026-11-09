@@ -1,59 +1,80 @@
-# Validation — Glass Effect 1.1.0
+# Validation — Glass Effect 1.2.0
 
-Checked on Windows x64 on 2026-11-05.
+Release checks run on Windows x64 on 2026-11-09.
 
-## Release checks
+## Current release source
 
-- All **8 Node.js patch tests** passed, covering supported-source detection,
-  rejection of unsupported or ambiguous integration points, preservation of
-  unrelated archive entries, assets, executable/archive integrity, preference
-  migration, malformed archives, and English renderer compilation.
-- The compiled **Glass-Effect-1.1.0-Setup.exe** installed in an isolated
-  workspace directory from a retained official source with a valid OpenAI
-  executable signature and the supported original archive SHA256. The test
-  created no shortcuts, launched no app automatically, and registered no
-  uninstaller for the daily installation.
-- Injected customization files and the alpine asset matched the release
-  source byte for byte. The executable's embedded archive-header SHA256 matched
-  the installed archive. Archive-integrity verification remained enabled.
-- Installation metadata and `owl-app.ini` selected the independent
-  **GlassEffect** profile. The daily CodexGlass installation was kept intact.
-- The isolated connected-workspace component preview checked zero gaps between
-  permanent panes, square inner sidebar corners, a floating composer, and no
-  extra pane backgrounds at body transparency values of **15%, 65%, and 95%**.
-  A 960-pixel viewport and multiline text input also passed.
-- The English appearance component page checked preference saving, restore
-  defaults, scene switching, and a 720-pixel viewport without browser errors.
-- Public preview images use fictional content and the included alpine scene.
-  The workspace image is a component preview, not an authenticated session.
-- The installer ZIP was checked against its explicit file list. Official
-  application binaries, browser profiles, conversations, credentials, local
-  QA fixtures, and runtime logs are excluded from source and downloads.
+- **14 Node.js tests** cover patch compatibility and rejection paths,
+  preservation of unrelated archive entries, executable/archive integrity,
+  native helper packaging, modeled reading contrast, smoothing, bright text,
+  failure recovery, missing helpers, sampling pause/resume, preference
+  migration, concurrent saves, cross-window updates, reloads, and subframe
+  access boundaries. Settings tests use a synthetic temporary profile.
+- **30 English component checks** cover four mode controls, keyboard selected
+  state, visible fallback/dark-background status, scene selection, defaults,
+  runtime errors, and 800/500/320-pixel layouts. Body transparency responds in
+  all four modes. Fifteen tint/body/composer/popup/floating-sidebar cases each
+  save and visibly change computed paint at three slider positions.
+- The EXE and installer ZIP are built from an explicit allowlist. The native
+  sampler is compiled from the included C# source. The test recorder, official
+  application binaries, browser profiles, credentials, conversations, raw
+  recordings, backups, and local QA logs are excluded.
+- The compiled setup is checked in an isolated directory using an unmodified
+  compatible official source, no shortcuts, no automatic launch, and no daily
+  installation registration. Injected files, helper digest, profile routing,
+  and embedded archive-header integrity are checked against release source.
+  A synthetic profile is retained during isolated uninstall.
+
+See [validation-1.2.0.json](docs/validation-1.2.0.json) for the machine-readable
+release results and their scope.
+
+## Native adaptive engine evidence
+
+The included comparison image and approximately 40-second video are actual
+captures of the local Chinese CodexGlass prototype with two separate native
+windows and fictional webpage content. Nineteen native checks passed on
+2026-11-08: white, clean dark, mixed, gray, scrolling, dark text-heavy pages,
+fallback and recovery, mode switching, hide/resume, window movement, typing,
+menu interaction, geometry, and isolation of the test profile. Display scaling
+was 150%. Median sampling time was 27.67 ms, p95 35.59 ms, maximum 53.65 ms
+in those scenarios; these are local measurements, not general guarantees.
+
+The release carries that adaptive module and native sampler source with
+English controls, the subsequent slider fix, and a narrow-layout border-box
+correction. The video predates the slider fix. The current English release
+has separate component/source/installer checks described above. The media
+does not establish authenticated-account or all-page behavior.
 
 ## Scope and limitations
 
-This release carries the connected layout from the installed local
-`connected-workspace-2` revision into Glass Effect's independent English
-project. Permanent panes share the body transparency value; the floating
-sidebar, composer, and popups keep their own saved values.
+Only official Store package **26.1016.8622.0** / app **26.1016.62342**, Windows
+11 22H2+ x64, is supported. Newer sources are rejected before customization.
+The official installation is unchanged. The customized executable's embedded
+archive integrity remains enabled; its original Authenticode signature is
+invalid after customization. Normal launch does not open a debugging port.
 
-These checks do not establish fresh-account authentication, every settings
-route or plugin, long-duration performance, every GPU/Windows combination,
-or desktop pixel refraction. No frame-rate or latency claim is made.
-The additional edge-lens experiment was cancelled and is not in this release.
-
-Only official Store package **26.1016.8622.0** / application **26.1016.62342**
-is supported. Newer builds are not claimed as compatible. Unsupported sources
-fail the installer check before customization; the official app is unchanged.
+Protected, unresponsive, or capture-incompatible windows can use the reading
+fallback. Other scaling factors, every GPU, every plugin/settings route,
+fresh-account authentication, and long-duration performance were not tested.
+The contrast calculation uses sampled background statistics and modeled text;
+it is not a guarantee for every rendered pixel or element.
 
 ## Reproduce
 
 ```powershell
-node --test tests/patch.test.cjs
-node --check scripts/patch.cjs
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\native\Build.ps1
+node --test tests/*.test.cjs
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Build.ps1
 ```
 
-Installation tests require an unmodified compatible official executable
-and archive. They are not distributed. See the README's isolated installation
-command. `SHA256SUMS.txt` covers the downloadable EXE, ZIP, and validation JSON.
+Optional component QA requires an installed Playwright module and Chrome:
+
+```powershell
+$env:PLAYWRIGHT_MODULE = 'C:\path\to\node_modules\playwright'
+node tests/appearance.cjs
+```
+
+Installation tests require a compatible original source, which is not
+distributed. See the README for the isolated installation command.
+`SHA256SUMS.txt` covers the downloadable installer, ZIP, comparison, video,
+and validation JSON.

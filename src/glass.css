@@ -443,7 +443,6 @@ html.lg-enabled [data-lg-settings-shell] [data-lg-settings-control] [class*="_Dr
 /* Native select overlays remain invisible so the glass facade is the only coat. */
 html.lg-enabled [data-lg-settings-shell] [data-native-selectcontrol]{background:transparent!important}
 
-
 /* v19: join permanent panes; preserve floating composers, cards and popups. */
 html.lg-enabled [data-app-shell-frame="true"]{padding:0!important;gap:0!important;--app-shell-titlebar-top-inset:0px!important}
 /* Paint a single coat, so the permanent sidebar cannot add extra opacity. */
@@ -472,3 +471,65 @@ html.lg-enabled [data-lg-layout-surface="rail"]:not([data-lg-floating-surface]){
  border-right:1px solid rgba(var(--lg-optic-rgb),.10)!important;
 }
 html.lg-enabled [data-app-shell-right-panel]:not([data-lg-floating-surface]){border-left:1px solid rgba(var(--lg-optic-rgb),.10)!important}
+
+
+/* Smoky reading modes. One shared shell; original colors, optics and geometry stay intact.
+   Clear has no material overrides, so existing transparency preferences are restored. */
+html.lg-enabled:is([data-lg-reading="balanced"],[data-lg-reading="reading"],[data-lg-reading="auto"]){
+ --lg-pane-rgb:24,31,41;--lg-rgb:24,31,41;
+ --lg-reading-shell-min:.62;--lg-reading-popup-min:.70;--lg-reading-composer-min:.16;
+}
+html.lg-enabled[data-lg-reading="reading"]{
+ --lg-reading-shell-min:.77;--lg-reading-popup-min:.84;--lg-reading-composer-min:.22;
+}
+html.lg-enabled:is([data-lg-reading="balanced"],[data-lg-reading="reading"],[data-lg-reading="auto"]) [data-app-shell-frame="true"]{
+ background-color:rgba(24,31,41,calc(1 - (1 - var(--lg-reading-shell-min))*(1 - var(--lg-workspace-alpha))*(1 - var(--lg-tint))))!important;
+ background-image:linear-gradient(145deg,#ffffff06,transparent 40%,#e8f0ff02 78%,#ffffff03)!important;
+}
+/* Detached views without the app shell still get a readable base, below their content. */
+html.lg-enabled:is([data-lg-reading="balanced"],[data-lg-reading="reading"],[data-lg-reading="auto"]):not(:has([data-app-shell-frame="true"])) body::before{
+ background-color:rgba(24,31,41,calc(1 - (1 - var(--lg-reading-shell-min))*(1 - var(--lg-workspace-alpha))*(1 - var(--lg-tint))))!important;
+ background-image:linear-gradient(145deg,#ffffff06,transparent 40%,#ffffff03)!important;
+}
+html.lg-enabled:is([data-lg-reading="balanced"],[data-lg-reading="reading"],[data-lg-reading="auto"]) :is([data-composer-body],.lg-composer-preview),
+html.lg-enabled:is([data-lg-reading="balanced"],[data-lg-reading="reading"],[data-lg-reading="auto"]) [data-lg-home-glass]::before{
+ background-color:rgba(24,31,41,calc(1 - (1 - var(--lg-reading-composer-min))*(1 - var(--lg-composer-alpha))))!important;
+}
+/* Home uses its existing outer capsule; do not double-paint the nested editor. */
+html.lg-enabled:is([data-lg-reading="balanced"],[data-lg-reading="reading"],[data-lg-reading="auto"]) [data-lg-home-glass] :is([data-composer-body],[data-composer-utility-rail]){
+ background:transparent!important;
+}
+/* Menus can be portalled outside the shared shell, so they need their own contrast floor. */
+html.lg-enabled[data-lg-scene]:is([data-lg-reading="balanced"],[data-lg-reading="reading"],[data-lg-reading="auto"]) [data-lg-floating-surface]{
+ --lg-floating-alpha:clamp(0,calc(1 - (1 - var(--lg-reading-popup-min))*(.75 - var(--lg-popup-adjust,0))),1);
+ background-image:linear-gradient(145deg,#ffffff06,transparent 45%,#ffffff03)!important;
+}
+/* Keep the peeking-sidebar control independent of popup transparency. */
+html.lg-enabled[data-lg-scene]:is([data-lg-reading="balanced"],[data-lg-reading="reading"],[data-lg-reading="auto"]) [data-lg-floating-surface="sidebar"]{
+ --lg-floating-alpha:calc(1 - (1 - var(--lg-reading-popup-min))*(1 - var(--lg-sidebar-alpha)));
+}
+html.lg-enabled:is([data-lg-reading="balanced"],[data-lg-reading="reading"],[data-lg-reading="auto"]) #lg-settings{
+ background-color:rgba(24,31,41,.2)!important;
+}
+.lg-reading-setting{flex-wrap:wrap;gap:12px 20px}
+.lg-reading-setting>span{flex:1 1 220px;min-width:0}
+.lg-reading-modes{display:inline-flex;gap:4px;padding:4px;border:1px solid #e8f3ff57;border-radius:24px;background:#18212d73;flex-shrink:0}
+#lg-settings .lg-reading-modes button{appearance:none;min-width:56px;min-height:36px;border:1px solid transparent;border-radius:19px;padding:6px 12px;background:transparent;color:#f4f9ff!important;font:inherit;cursor:pointer;text-shadow:none!important}
+#lg-settings .lg-reading-modes button:hover{background:#ffffff1a}
+#lg-settings .lg-reading-modes button[aria-pressed="true"]{background:#e4eef6!important;color:#172b3b!important;border-color:#ffffff8c;box-shadow:inset 0 1px 1px #ffffffa6}
+#lg-settings .lg-reading-modes button:focus-visible{outline:2px solid #ffffff;outline-offset:2px}
+@media(prefers-reduced-transparency:reduce){
+ html.lg-enabled:is([data-lg-reading="balanced"],[data-lg-reading="reading"],[data-lg-reading="auto"]) [data-app-shell-frame="true"]{background-color:rgba(24,31,41,.96)!important}
+ html.lg-enabled[data-lg-scene]:is([data-lg-reading="balanced"],[data-lg-reading="reading"],[data-lg-reading="auto"]) [data-lg-floating-surface]{--lg-floating-alpha:.96}
+}
+
+/* Automatic readings are transient per-window state, never saved on every sample. */
+#lg-settings .lg-reading-modes{box-sizing:border-box;max-width:100%;flex-wrap:wrap;justify-content:center}
+html.lg-enabled[data-lg-reading="auto"]{
+ --lg-reading-shell-min:var(--lg-auto-shell-alpha,.77);
+ --lg-reading-popup-min:clamp(.68,calc(var(--lg-auto-shell-alpha,.77) + .12),.94);
+ --lg-reading-composer-min:clamp(.12,calc(var(--lg-auto-shell-alpha,.77)*.28),.24);
+}
+html.lg-enabled[data-lg-reading="auto"] [data-app-shell-frame="true"]{transition:background-color .45s ease!important}
+html.lg-enabled[data-lg-reading="auto"] [data-lg-floating-surface],html.lg-enabled[data-lg-reading="auto"] [data-composer-body]{transition:background-color .45s ease,box-shadow .18s ease}
+@media(prefers-reduced-motion:reduce){html.lg-enabled[data-lg-reading="auto"] :is([data-app-shell-frame="true"],[data-lg-floating-surface],[data-composer-body]){transition:none!important}}

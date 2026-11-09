@@ -1,4 +1,4 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param(
     [string]$SourceAppPath,
     [string]$InstallRoot = (Join-Path $env:LOCALAPPDATA 'Programs\GlassEffect'),
@@ -68,6 +68,9 @@ try {
     if ($signature.Status -ne 'Valid' -or $signature.SignerCertificate.Subject -notmatch 'OpenAI') { throw 'Choose an unmodified official OpenAI Codex installation. Its executable signature must be valid.' }
     $node = Join-Path $sourceApp 'resources\cua_node\bin\node.exe'
     if (-not (Test-Path -LiteralPath $node)) { throw 'This Codex version does not contain the required bundled runtime. No files were changed.' }
+    $sampler = Join-Path $projectRoot 'native\glass-adaptive-sampler.exe'
+    if (-not (Test-Path -LiteralPath $sampler)) { & (Join-Path $projectRoot 'native\Build.ps1') }
+    if (-not (Test-Path -LiteralPath $sampler)) { throw 'The native background sampler could not be built.' }
     Write-Host 'Checking the installed Codex version and patch compatibility...'
     & $node (Join-Path $projectRoot 'scripts\patch.cjs') --app $sourceApp --project $projectRoot --check
     if ($LASTEXITCODE -ne 0) { throw 'This version is incompatible. The original application and profile were not changed. Check the release page for a compatible update.' }
@@ -90,7 +93,7 @@ try {
             $shortcuts += $linkPath
         }
     }
-    $record = [ordered]@{Project='GlassEffect';Version='1.1.0';InstalledAt=[DateTimeOffset]::UtcNow.ToString('o');InstallRoot=$installRootPath;ProfileRoot=$profileRoot;SourceAppPath=$sourceApp;OriginalInstallationModified=$false;ProfileCopied=$false;DebugPortEnabled=$false;Shortcuts=$shortcuts;RegisteredUninstaller=[bool]$isDefaultInstall}
+    $record = [ordered]@{Project='GlassEffect';Version='1.2.0';InstalledAt=[DateTimeOffset]::UtcNow.ToString('o');InstallRoot=$installRootPath;ProfileRoot=$profileRoot;SourceAppPath=$sourceApp;OriginalInstallationModified=$false;ProfileCopied=$false;DebugPortEnabled=$false;Shortcuts=$shortcuts;RegisteredUninstaller=[bool]$isDefaultInstall}
     $record | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $stageRoot 'installation.json') -Encoding UTF8
     Move-Item -LiteralPath $stageRoot -Destination $installRootPath
     $stageRoot = $null
@@ -111,7 +114,7 @@ try {
         $registry = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\GlassEffect'
         New-Item -Path $registry -Force | Out-Null
         $command = '"' + $powershell + '" -NoProfile -ExecutionPolicy Bypass -File "' + (Join-Path $installRootPath 'Uninstall.ps1') + '"'
-        foreach ($pair in @{DisplayName='Glass Effect';DisplayVersion='1.1.0';Publisher='Glass Effect contributors';InstallLocation=$installRootPath;DisplayIcon=((Join-Path $installRootPath 'app\ChatGPT.exe')+',0');UninstallString=$command;QuietUninstallString=$command}.GetEnumerator()) { New-ItemProperty -Path $registry -Name $pair.Key -Value $pair.Value -PropertyType String -Force | Out-Null }
+        foreach ($pair in @{DisplayName='Glass Effect';DisplayVersion='1.2.0';Publisher='Glass Effect contributors';InstallLocation=$installRootPath;DisplayIcon=((Join-Path $installRootPath 'app\ChatGPT.exe')+',0');UninstallString=$command;QuietUninstallString=$command}.GetEnumerator()) { New-ItemProperty -Path $registry -Name $pair.Key -Value $pair.Value -PropertyType String -Force | Out-Null }
         foreach ($key in @('NoModify','NoRepair')) { New-ItemProperty -Path $registry -Name $key -Value 1 -PropertyType DWord -Force | Out-Null }
     }
     Write-Host ('Installed Glass Effect in ' + $installRootPath)

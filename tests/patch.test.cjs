@@ -51,7 +51,7 @@ test('repackaging preserves unrelated packed, unpacked and link entries and matc
     assert.deepEqual(a.read('.vite/build/untouched.bin'),f.other);
     assert.equal(a.entries.find(e=>e.key.endsWith('native.node')).entry.unpacked,true);
     assert.equal(a.entries.find(e=>e.key.endsWith('alias')).entry.link,'.vite/build/untouched.bin');
-    for(const name of ['glass-main.cjs','glass-renderer.js','glass.css']){
+    for(const name of ['glass-main.cjs','glass-renderer.js','glass.css','glass-adaptive.cjs']){
       const key='.vite/build/'+name,data=a.read(key),entry=a.entries.find(e=>e.key===key).entry;
       assert.deepEqual(data,fs.readFileSync(path.join(project,'src',name)));
       assert.equal(entry.integrity.hash,sha(data));assert.equal(entry.integrity.blocks[0],sha(data));
@@ -63,6 +63,8 @@ test('repackaging preserves unrelated packed, unpacked and link entries and matc
     const headerHash=sha(a.json);
     assert.equal(manifest.headerSha256,headerHash);
     assert.equal(fs.readFileSync(f.exe).toString('ascii',0x1000,0x1040),headerHash);
+    assert.equal(fileHash(path.join(f.app,'resources','glass-adaptive-sampler.exe')),fileHash(path.join(project,'native','glass-adaptive-sampler.exe')));
+    assert.equal(manifest.nativeSamplerSha256,fileHash(path.join(project,'native','glass-adaptive-sampler.exe')));
     assert.equal(manifest.integrityVerificationEnabled,true);assert.equal(manifest.officialSignatureValid,false);
     assert.match(fs.readFileSync(path.join(f.app,'resources','owl-app.ini'),'utf8'),/UserDataDirectoryName=GlassEffect/);
   }finally{a.close();}

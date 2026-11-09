@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.2.0 — 2026-11-09
+
+- Add automatic background detection and a smoky base for bright webpages.
+- Add Auto, Clear, Balanced, and Reading modes with saved manual choices.
+- Smooth tint changes, pause detection when hidden/minimized or in manual
+  modes, and use a reading base when capture is unavailable.
+- Preserve all existing appearance slider values during migration.
+- Repair tint/body/composer/popup/floating-sidebar controls so their changes
+  remain visible in automatic and manual reading modes.
+- Keep the connected shell and independent floating composer geometry.
+- Provide native sampler source, release checks, and native-window test media.
+
+
 ## 1.1.0 — 2026-11-05
 
 - Join the title bar, navigation rail, docked sidebar, and workspace into one

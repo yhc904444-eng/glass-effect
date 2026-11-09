@@ -64,8 +64,11 @@ function inspect(appDir,projectRoot,compatibility) {
     const hashOffset=exe.indexOf(previousHash);
     if(hashOffset<0 || exe.indexOf(previousHash,hashOffset+1)>=0)throw Error('The executable archive-integrity metadata is not unique. No files were changed.');
     if(exe.toString('ascii',0,2)!=='MZ' || exe.readUInt16LE(exe.readUInt32LE(0x3c)+4)!==0x8664)throw Error('Only the verified Windows x64 executable is supported.');
-    for(const name of ['glass-main.cjs','glass-preload.cjs','glass-renderer.js','glass.css','assets/alpine-lake-v11.png'])fs.accessSync(path.join(projectRoot,'src',name));
-    return {sourceHash,support,mainKey:main.key,preloadKey,hashOffset,headerSha256:previousHash};
+    for(const name of ['glass-main.cjs','glass-preload.cjs','glass-renderer.js','glass.css','glass-adaptive.cjs','assets/alpine-lake-v11.png'])fs.accessSync(path.join(projectRoot,'src',name));
+    const samplerPath=path.join(projectRoot,'native','glass-adaptive-sampler.exe');
+    const sampler=fs.readFileSync(samplerPath);
+    if(sampler.length<256 || sampler.toString('ascii',0,2)!=='MZ' || sampler.readUInt32LE(0x3c)+6>sampler.length || sampler.readUInt16LE(sampler.readUInt32LE(0x3c)+4)!==0x8664)throw Error('Build the Windows x64 native sampler with native/Build.ps1 before installation.');
+    return {nativeSamplerSha256:digest(sampler),sourceHash,support,mainKey:main.key,preloadKey,hashOffset,headerSha256:previousHash};
   } finally {source.close();}
 }
 function patch(appDir,projectRoot,compatibility) {
@@ -78,7 +81,7 @@ function patch(appDir,projectRoot,compatibility) {
     const original=source.read(info.mainKey).toString('utf8'),needle='applyWindowBackdrop(e,t,n){';
     replacements.set(info.mainKey,Buffer.from('const __codexGlass=require("./glass-main.cjs");\n'+original.replace('R=new O.BrowserWindow(L);','R=new O.BrowserWindow(__codexGlass.prepareWindowOptions(L,d));').replace(needle,needle+'if(__codexGlass.applyWindow(e,t,()=>this.applyWindowBackdrop(e,t,!0)))return;')));
     replacements.set(info.preloadKey,Buffer.concat([source.read(info.preloadKey),Buffer.from('\n'),fs.readFileSync(path.join(projectRoot,'src','glass-preload.cjs'))]));
-    for(const name of ['glass-main.cjs','glass-renderer.js','glass.css'])replacements.set('.vite/build/'+name,fs.readFileSync(path.join(projectRoot,'src',name)));
+    for(const name of ['glass-main.cjs','glass-renderer.js','glass.css','glass-adaptive.cjs'])replacements.set('.vite/build/'+name,fs.readFileSync(path.join(projectRoot,'src',name)));
     replacements.set('.vite/build/assets/alpine-lake-v11.png',fs.readFileSync(path.join(projectRoot,'src/assets/alpine-lake-v11.png')));
     for(const key of replacements.keys())if(!source.entries.some(e=>e.key===key)){
       let node=source.header;const names=key.split('/');
@@ -108,6 +111,7 @@ function patch(appDir,projectRoot,compatibility) {
     }
     fs.closeSync(dest);dest=undefined;
     const exe=fs.readFileSync(exePath),nextHash=digest(payload);exe.write(nextHash,info.hashOffset,64,'ascii');fs.writeFileSync(tempExe,exe,{flag:'wx'});
+    fs.copyFileSync(path.join(projectRoot,'native','glass-adaptive-sampler.exe'),path.join(appDir,'resources','glass-adaptive-sampler.exe'));
     source.close();
     // This function is run only in a disposable installation staging directory.
     fs.renameSync(tempArchive,archive);fs.renameSync(tempExe,exePath);
@@ -115,7 +119,7 @@ function patch(appDir,projectRoot,compatibility) {
     const ini=fs.readFileSync(iniPath,'utf8');
     if(!/^UserDataDirectoryName=.*$/m.test(ini))throw Error('Missing isolated-profile configuration.');
     fs.writeFileSync(iniPath,ini.replace(/^UserDataDirectoryName=.*$/m,'UserDataDirectoryName=GlassEffect'));
-    return {releaseVersion:compatibility.releaseVersion,customizationRevision:compatibility.customizationRevision,sourcePackageVersion:info.support.storePackageVersion,sourceArchiveSha256:info.sourceHash,archiveSha256:fileHash(archive),executableSha256:fileHash(exePath),headerSha256:nextHash,integrityVerificationEnabled:true,officialSignatureValid:false,profileName:'GlassEffect',modifiedFiles:[...replacements.keys(),'ChatGPT.exe archive-integrity metadata','resources/owl-app.ini']};
+    return {nativeSamplerSha256:info.nativeSamplerSha256,releaseVersion:compatibility.releaseVersion,customizationRevision:compatibility.customizationRevision,sourcePackageVersion:info.support.storePackageVersion,sourceArchiveSha256:info.sourceHash,archiveSha256:fileHash(archive),executableSha256:fileHash(exePath),headerSha256:nextHash,integrityVerificationEnabled:true,officialSignatureValid:false,profileName:'GlassEffect',modifiedFiles:[...replacements.keys(),'resources/glass-adaptive-sampler.exe','ChatGPT.exe archive-integrity metadata','resources/owl-app.ini']};
   } finally {
     if(dest!==undefined)fs.closeSync(dest);
     try{source.close();}catch{}

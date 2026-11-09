@@ -6,3 +6,5 @@
 /app/
 /profile/
 /original-*
+
+/native/*.exe

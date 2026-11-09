@@ -3,6 +3,10 @@ function(initial,css,openSettings,landscape) {
   window.__codexGlassPreview=true;
   let state={...initial},pending=Promise.resolve(),saveTimer;
   const root=document.documentElement;
+  let autoSample={alpha:.77,status:'starting'};
+  const autoHint=()=>({starting:'Detecting the background behind this window…',fallback:'Detection unavailable; using the reading base.','scene-static':'Alpine lake uses a reading base; detection is for the desktop background.'}[autoSample.status]||(autoSample.alpha>.55?'Bright background · Glass automatically deepened.':autoSample.alpha>.28?'Midtone background · Maintaining reading contrast.':'Dark background · Glass automatically cleared.'));
+  const applyAuto=()=>{root.style.setProperty('--lg-auto-shell-alpha',String(autoSample.alpha));root.dataset.lgAutoStatus=autoSample.status;if(root.dataset.lgReading==='auto'){const hint=document.getElementById('lg-reading-help');if(hint)hint.textContent=autoHint();}};
+  window.__codexGlassAutoUpdate=value=>{if(!value||!Number.isFinite(value.alpha))return;autoSample={...value,alpha:Math.max(.12,Math.min(.84,value.alpha))};applyAuto();};
   const style=document.createElement('style');
   style.id='codex-liquid-glass-style';style.textContent=css;document.head.append(style);
   const scenery=document.createElement('div');scenery.id='lg-landscape';scenery.setAttribute('aria-hidden','true');
@@ -250,6 +254,12 @@ function(initial,css,openSettings,landscape) {
     root.classList.toggle('lg-enabled',state.enabled);
     if(enabling){dirtyScopes.add(document.body);scheduleMount();}
     root.dataset.lgScene=state.scene??'desktop';
+    const readingMode=['clear','balanced','reading','auto'].includes(state.readingMode)?state.readingMode:'auto';
+    root.dataset.lgReading=readingMode;
+    for(const button of document.querySelectorAll('#lg-settings [data-lg-reading-choice]'))button.setAttribute('aria-pressed',String(button.dataset.lgReadingChoice===readingMode));
+    const readingHelp=document.getElementById('lg-reading-help');
+    if(readingHelp)readingHelp.textContent={clear:'Use the original clear appearance and transparency.',balanced:'A moderate base balances transparency and reading.',reading:'A smoky base for white pages; transparency sliders can deepen it further.',auto:autoHint()}[readingMode];
+    applyAuto();
     syncLiquidMotion();
     queueRefraction();
     root.style.setProperty('--lg-tint',String(state.opacity/100));
@@ -289,8 +299,9 @@ function(initial,css,openSettings,landscape) {
     const title=headings.find(e=>/^(外观|Appearance)$/.test(e.textContent.trim()));
     if(!title)return;
     const section=document.createElement('section');section.id='lg-settings';section.setAttribute('aria-label','Glass Effect settings');
-    section.innerHTML=`<div class="lg-card-title"><span class="lg-glint">◈</span><div><h3>Glass Effect</h3><p>Clear desktop · Thin edges · Gentle light</p></div></div>
+    section.innerHTML=`<div class="lg-card-title"><span class="lg-glint">◈</span><div><h3>Glass Effect</h3><p>Adaptive background · Smoky reading · Gentle light</p></div></div>
       <label class="lg-setting"><span><strong>Enable Glass Effect</strong><small>A shared glass material for the sidebar, workspace, and floating panels</small></span><input id="lg-enabled" type="checkbox" role="switch" aria-label="Enable Glass Effect"></label>
+      <div class="lg-setting lg-reading-setting"><span><strong>Glass reading mode</strong><small id="lg-reading-help">A smoky base for white pages; transparency sliders can deepen it further.</small></span><div class="lg-reading-modes" role="group" aria-label="Glass reading mode" aria-describedby="lg-reading-help"><button type="button" data-lg-reading-choice="auto" aria-pressed="false">Auto</button><button type="button" data-lg-reading-choice="clear" aria-pressed="false">Clear</button><button type="button" data-lg-reading-choice="balanced" aria-pressed="false">Balanced</button><button type="button" data-lg-reading-choice="reading" aria-pressed="false">Reading</button></div></div>
       <label class="lg-setting"><span><strong>Glass background</strong><small>See the desktop and other windows behind the app</small></span><select id="lg-scene" aria-label="Glass background"><option value="desktop">Clear desktop</option><option value="alpine">Alpine lake</option></select></label>
       <label class="lg-setting"><span><strong>Animated edges</strong><small>Soft light moves gently along the glass edges</small></span><input id="lg-edgeFlow" class="lg-flow-toggle" type="checkbox" role="switch" aria-label="Animated edges"></label>
       <label class="lg-setting"><span><strong>Glass tint</strong><small>Lower values make the neutral tint more transparent</small></span><span class="lg-slider"><input id="lg-opacity" type="range" min="0" max="85" step="1" aria-label="Glass tint"><output id="lg-opacity-value"></output></span></label>
@@ -311,8 +322,10 @@ function(initial,css,openSettings,landscape) {
       const el=section.querySelector('#lg-'+key);
       el.addEventListener('input',()=>update(key,['enabled','edgeFlow'].includes(key)?el.checked:Number(el.value)));
     }
+    for(const button of section.querySelectorAll('[data-lg-reading-choice]'))button.addEventListener('click',()=>update('readingMode',button.dataset.lgReadingChoice));
+    section.querySelector('#lg-status').setAttribute('role','status');
     section.querySelector('#lg-scene').addEventListener('change',event=>update('scene',event.target.value));
-    section.querySelector('#lg-reset').addEventListener('click',()=>{state={enabled:true,opacity:8,highlights:48,workspaceTransparency:94,composerTransparency:90,blur:3,scene:'desktop',edgeFlow:true,sidebarTransparency:94,popupTransparency:75,edgeWidth:100,edgeIntensity:100,flowSpeed:100};apply();save();});
+    section.querySelector('#lg-reset').addEventListener('click',()=>{state={enabled:true,opacity:8,highlights:48,workspaceTransparency:94,composerTransparency:90,blur:3,scene:'desktop',edgeFlow:true,sidebarTransparency:94,popupTransparency:75,edgeWidth:100,edgeIntensity:100,flowSpeed:100,readingMode:'auto',adaptiveVersion:1};apply();save();});
     apply();
   };
   let mountFrame;const dirtyScopes=new Set();

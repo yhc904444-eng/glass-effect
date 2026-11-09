@@ -1,0 +1,530 @@
+{
+  "project": "Glass Effect",
+  "version": "1.2.0",
+  "revision": "glass-effect-adaptive-settings-controls-1-en",
+  "checkedAt": "2026-11-09T07:30:08.151Z",
+  "platform": "Windows x64",
+  "supportedSource": {
+    "storePackage": "26.1016.8622.0",
+    "application": "26.1016.62342"
+  },
+  "sourceTests": {
+    "passed": true,
+    "count": 14,
+    "command": "node --test tests/*.test.cjs"
+  },
+  "englishComponentChecks": {
+    "passed": true,
+    "count": 30,
+    "checks": [
+      {
+        "name": "English reading mode controls are mounted",
+        "passed": true
+      },
+      {
+        "name": "All four modes are available",
+        "passed": true
+      },
+      {
+        "name": "Body slider visibly responds and saves in auto",
+        "passed": true
+      },
+      {
+        "name": "Body slider visibly responds and saves in clear",
+        "passed": true
+      },
+      {
+        "name": "Body slider visibly responds and saves in balanced",
+        "passed": true
+      },
+      {
+        "name": "Body slider visibly responds and saves in reading",
+        "passed": true
+      },
+      {
+        "name": "auto workspaceTransparency responds at three saved positions",
+        "passed": true
+      },
+      {
+        "name": "auto opacity responds at three saved positions",
+        "passed": true
+      },
+      {
+        "name": "auto composerTransparency responds at three saved positions",
+        "passed": true
+      },
+      {
+        "name": "auto popupTransparency responds at three saved positions",
+        "passed": true
+      },
+      {
+        "name": "auto sidebarTransparency responds at three saved positions",
+        "passed": true
+      },
+      {
+        "name": "balanced workspaceTransparency responds at three saved positions",
+        "passed": true
+      },
+      {
+        "name": "balanced opacity responds at three saved positions",
+        "passed": true
+      },
+      {
+        "name": "balanced composerTransparency responds at three saved positions",
+        "passed": true
+      },
+      {
+        "name": "balanced popupTransparency responds at three saved positions",
+        "passed": true
+      },
+      {
+        "name": "balanced sidebarTransparency responds at three saved positions",
+        "passed": true
+      },
+      {
+        "name": "reading workspaceTransparency responds at three saved positions",
+        "passed": true
+      },
+      {
+        "name": "reading opacity responds at three saved positions",
+        "passed": true
+      },
+      {
+        "name": "reading composerTransparency responds at three saved positions",
+        "passed": true
+      },
+      {
+        "name": "reading popupTransparency responds at three saved positions",
+        "passed": true
+      },
+      {
+        "name": "reading sidebarTransparency responds at three saved positions",
+        "passed": true
+      },
+      {
+        "name": "Capture failure explains the reading fallback",
+        "passed": true
+      },
+      {
+        "name": "Dark background updates the visible status",
+        "passed": true
+      },
+      {
+        "name": "English mode buttons fit at 800px",
+        "passed": true
+      },
+      {
+        "name": "English mode buttons fit at 500px",
+        "passed": true
+      },
+      {
+        "name": "English mode buttons fit at 320px",
+        "passed": true
+      },
+      {
+        "name": "Keyboard activation exposes selected state",
+        "passed": true
+      },
+      {
+        "name": "Scene selection saves and applies",
+        "passed": true
+      },
+      {
+        "name": "Restore defaults saves automatic mode",
+        "passed": true
+      },
+      {
+        "name": "No browser runtime errors",
+        "passed": true
+      }
+    ],
+    "sliderCases": [
+      {
+        "mode": "auto",
+        "key": "workspaceTransparency",
+        "values": [
+          95,
+          50,
+          0
+        ],
+        "paints": [
+          "rgba(24, 31, 41, 0.78)",
+          "rgba(24, 31, 41, 0.886)",
+          "rgb(24, 31, 41)"
+        ]
+      },
+      {
+        "mode": "auto",
+        "key": "opacity",
+        "values": [
+          0,
+          40,
+          85
+        ],
+        "paints": [
+          "rgba(24, 31, 41, 0.78)",
+          "rgba(24, 31, 41, 0.87)",
+          "rgba(24, 31, 41, 0.97)"
+        ]
+      },
+      {
+        "mode": "auto",
+        "key": "composerTransparency",
+        "values": [
+          95,
+          50,
+          0
+        ],
+        "paints": [
+          "rgba(24, 31, 41, 0.255)",
+          "rgba(24, 31, 41, 0.608)",
+          "rgb(24, 31, 41)"
+        ]
+      },
+      {
+        "mode": "auto",
+        "key": "popupTransparency",
+        "values": [
+          100,
+          50,
+          0
+        ],
+        "paints": [
+          "rgba(24, 31, 41, 0.89)",
+          "rgba(24, 31, 41, 0.945)",
+          "rgb(24, 31, 41)"
+        ]
+      },
+      {
+        "mode": "auto",
+        "key": "sidebarTransparency",
+        "values": [
+          95,
+          50,
+          0
+        ],
+        "paints": [
+          "rgba(24, 31, 41, 0.894)",
+          "rgba(24, 31, 41, 0.945)",
+          "rgb(24, 31, 41)"
+        ]
+      },
+      {
+        "mode": "balanced",
+        "key": "workspaceTransparency",
+        "values": [
+          95,
+          50,
+          0
+        ],
+        "paints": [
+          "rgba(24, 31, 41, 0.64)",
+          "rgba(24, 31, 41, 0.81)",
+          "rgb(24, 31, 41)"
+        ]
+      },
+      {
+        "mode": "balanced",
+        "key": "opacity",
+        "values": [
+          0,
+          40,
+          85
+        ],
+        "paints": [
+          "rgba(24, 31, 41, 0.64)",
+          "rgba(24, 31, 41, 0.784)",
+          "rgba(24, 31, 41, 0.945)"
+        ]
+      },
+      {
+        "mode": "balanced",
+        "key": "composerTransparency",
+        "values": [
+          95,
+          50,
+          0
+        ],
+        "paints": [
+          "rgba(24, 31, 41, 0.204)",
+          "rgba(24, 31, 41, 0.58)",
+          "rgb(24, 31, 41)"
+        ]
+      },
+      {
+        "mode": "balanced",
+        "key": "popupTransparency",
+        "values": [
+          100,
+          50,
+          0
+        ],
+        "paints": [
+          "rgba(24, 31, 41, 0.7)",
+          "rgba(24, 31, 41, 0.85)",
+          "rgb(24, 31, 41)"
+        ]
+      },
+      {
+        "mode": "balanced",
+        "key": "sidebarTransparency",
+        "values": [
+          95,
+          50,
+          0
+        ],
+        "paints": [
+          "rgba(24, 31, 41, 0.714)",
+          "rgba(24, 31, 41, 0.85)",
+          "rgb(24, 31, 41)"
+        ]
+      },
+      {
+        "mode": "reading",
+        "key": "workspaceTransparency",
+        "values": [
+          95,
+          50,
+          0
+        ],
+        "paints": [
+          "rgba(24, 31, 41, 0.78)",
+          "rgba(24, 31, 41, 0.886)",
+          "rgb(24, 31, 41)"
+        ]
+      },
+      {
+        "mode": "reading",
+        "key": "opacity",
+        "values": [
+          0,
+          40,
+          85
+        ],
+        "paints": [
+          "rgba(24, 31, 41, 0.78)",
+          "rgba(24, 31, 41, 0.87)",
+          "rgba(24, 31, 41, 0.97)"
+        ]
+      },
+      {
+        "mode": "reading",
+        "key": "composerTransparency",
+        "values": [
+          95,
+          50,
+          0
+        ],
+        "paints": [
+          "rgba(24, 31, 41, 0.26)",
+          "rgba(24, 31, 41, 0.61)",
+          "rgb(24, 31, 41)"
+        ]
+      },
+      {
+        "mode": "reading",
+        "key": "popupTransparency",
+        "values": [
+          100,
+          50,
+          0
+        ],
+        "paints": [
+          "rgba(24, 31, 41, 0.84)",
+          "rgba(24, 31, 41, 0.92)",
+          "rgb(24, 31, 41)"
+        ]
+      },
+      {
+        "mode": "reading",
+        "key": "sidebarTransparency",
+        "values": [
+          95,
+          50,
+          0
+        ],
+        "paints": [
+          "rgba(24, 31, 41, 0.847)",
+          "rgba(24, 31, 41, 0.92)",
+          "rgb(24, 31, 41)"
+        ]
+      }
+    ]
+  },
+  "compiledInstaller": {
+    "passed": true,
+    "checks": [
+      {
+        "name": "Compiled setup installs version 1.2.0",
+        "passed": true
+      },
+      {
+        "name": "Independent GlassEffect profile routing",
+        "passed": true
+      },
+      {
+        "name": "No shortcuts, registration, or debug port in isolated test",
+        "passed": true
+      },
+      {
+        "name": "glass-main.cjs matches release source",
+        "passed": true
+      },
+      {
+        "name": "glass-renderer.js matches release source",
+        "passed": true
+      },
+      {
+        "name": "glass.css matches release source",
+        "passed": true
+      },
+      {
+        "name": "glass-adaptive.cjs matches release source",
+        "passed": true
+      },
+      {
+        "name": "Alpine asset matches release source",
+        "passed": true
+      },
+      {
+        "name": "Executable archive-header integrity matches installed archive",
+        "passed": true
+      },
+      {
+        "name": "All packed entries with integrity metadata verify",
+        "passed": true
+      },
+      {
+        "name": "Installed native helper matches compiled release helper",
+        "passed": true
+      },
+      {
+        "name": "Original official archive remains unchanged",
+        "passed": true
+      },
+      {
+        "name": "Setup preserves synthetic profile",
+        "passed": true
+      },
+      {
+        "name": "Adaptive engine source matches native test implementation",
+        "passed": true
+      }
+    ],
+    "packedEntriesVerified": 21233,
+    "nativeSamplerSha256": "6ef23823fb309fb627f7a2d779e7fa89f2bfbb6305d0143a1a60b3b7917272b0",
+    "archiveSha256": "a293eccd552a50f449e4e04ab376ddee27700f23fbff327ec0456ef997bb9008",
+    "headerSha256": "783db19f25cd431650e4a8a4166b1255d7a3b5690bd2b67c6300421e4f8c9810",
+    "uninstall": {
+      "passed": true,
+      "isolatedInstallRemoved": true,
+      "syntheticProfileRetained": true,
+      "dailyInstallModified": false
+    }
+  },
+  "packaging": {
+    "passed": true,
+    "files": 24,
+    "explicitAllowlist": true,
+    "allFilesMatchSource": true,
+    "exeAndZipPayloadMatch": true,
+    "officialBinariesAndPrivateDataExcluded": true
+  },
+  "nativeEngineEvidence": {
+    "passed": true,
+    "testedAt": "2026-11-08",
+    "revision": "adaptive-background-1",
+    "sourceMatchesRelease": true,
+    "checks": [
+      {
+        "name": "Native test uses an isolated startup profile",
+        "passed": true
+      },
+      {
+        "name": "Sampling excludes the glass itself",
+        "passed": true
+      },
+      {
+        "name": "White background automatically deepens the glass",
+        "passed": true
+      },
+      {
+        "name": "Dark background restores transparency",
+        "passed": true
+      },
+      {
+        "name": "Automatic changes do not move hit targets",
+        "passed": true
+      },
+      {
+        "name": "Mixed background retains contrast in its bright half",
+        "passed": true
+      },
+      {
+        "name": "Gray background receives an intermediate tint",
+        "passed": true
+      },
+      {
+        "name": "Scrolling mixed content does not cause tint oscillation",
+        "passed": true
+      },
+      {
+        "name": "White text on a dark background still receives a readable tint",
+        "passed": true
+      },
+      {
+        "name": "Detection failure returns to a readable base",
+        "passed": true
+      },
+      {
+        "name": "Detection recovers after a temporary failure",
+        "passed": true
+      },
+      {
+        "name": "Chinese typing and the send button remain functional",
+        "passed": true
+      },
+      {
+        "name": "Native test menu opens at its original position",
+        "passed": true
+      },
+      {
+        "name": "A manual mode stops background sampling",
+        "passed": true
+      },
+      {
+        "name": "Hiding the glass window stops background sampling",
+        "passed": true
+      },
+      {
+        "name": "Showing the window resumes sampling",
+        "passed": true
+      },
+      {
+        "name": "Sampling follows native window movement",
+        "passed": true
+      },
+      {
+        "name": "The native test renderer has no uncaught script errors",
+        "passed": true
+      },
+      {
+        "name": "Tests do not modify the actual client preferences",
+        "passed": true
+      }
+    ],
+    "displayScale": 1.5,
+    "samplingMs": {
+      "median": 27.67,
+      "p95": 35.59,
+      "max": 53.65
+    },
+    "scope": "Two separate native windows with fictional webpage content in the local Chinese prototype. Media predates the slider fix. Release English controls were checked separately."
+  },
+  "limitations": [
+    "Only the exact documented original application build is supported.",
+    "Capture-incompatible or protected backgrounds use the reading fallback.",
+    "Fresh-account authentication, all pages/plugins, other display scales and long-duration performance were not verified."
+  ],
+  "passed": true
+}

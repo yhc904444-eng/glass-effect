@@ -17,6 +17,22 @@ earlier Frosted Glass / Codex Liquid Glass project.
 *Connected workspace in an isolated component preview with fictional content
 and the included alpine lake scene.*
 
+## Adaptive reading in 1.2.0
+
+White webpages now automatically deepen the smoky glass base. Clean dark
+backgrounds let it clear again. Open **Settings > Appearance > Glass reading
+mode** and choose **Auto**, **Clear**, **Balanced**, or **Reading**.
+Auto is the new default; existing appearance values are retained. Once you
+choose a manual mode, that choice is saved across restarts.
+
+![Automatic glass on white and dark backgrounds](docs/adaptive-comparison.png)
+
+[Watch the native-window test video](https://github.com/yhc904444-eng/glass-effect/releases/download/v1.2.0/Glass-Effect-1.2.0-Native-Test.mp4).
+The comparison and video show the local Chinese CodexGlass prototype, two
+separate native windows, and fictional webpage content at 150% display scaling.
+The release uses the same adaptive engine with English controls and the later
+slider fix. See [detection behavior and privacy](docs/adaptive-background.md).
+
 ## Appearance
 
 - **Clear desktop:** native window transparency reveals the live desktop.
@@ -32,22 +48,24 @@ and the included alpine lake scene.*
 - **Immediate adjustments:** controls apply changes immediately and save
   preferences locally. Reduced-motion preferences are respected.
 
-The clear desktop mode uses native transparency. It does not capture the
-screen or bend desktop pixels. Decorative edge optics operate within the
-application; their blur setting does not blur the desktop outside it.
+Clear desktop mode uses native transparency. In Auto mode, a separate local
+helper samples windows behind the app to adjust its tint. It processes pixels
+in memory and returns color/brightness statistics; it does not save or upload
+images. Manual modes stop sampling. Decorative edge optics operate within
+the application; their blur setting does not blur the desktop outside it.
 
 ## Download and install
 
-Download [Glass Effect 1.1.0](https://github.com/yhc904444-eng/glass-effect/releases/tag/v1.1.0).
+Download [Glass Effect 1.2.0](https://github.com/yhc904444-eng/glass-effect/releases/tag/v1.2.0).
 
 1. Use **Windows 11 22H2 or newer, x64**, with approximately **5 GB** of free
    space and a compatible official Codex installation (see below).
-2. Open **Glass-Effect-1.1.0-Setup.exe**. Setup runs for your Windows account
+2. Open **Glass-Effect-1.2.0-Setup.exe**. Setup runs for your Windows account
    and builds a separate local copy. No development tools are required.
 3. Open **Glass Effect** from the desktop or Start menu. Sign in if prompted,
    then open **Settings > Appearance** to adjust the material.
 
-Alternatively, extract **Glass-Effect-1.1.0-Installer.zip** and double-click
+Alternatively, extract **Glass-Effect-1.2.0-Installer.zip** and double-click
 **Install.cmd**. The EXE and ZIP contain the same installation scripts and
 customization source. They do not contain the official Codex application.
 
@@ -66,7 +84,7 @@ Installation stops if the compatibility check fails.
 | --- | --- | --- |
 | 26.1016.8622.0 | 26.1016.62342 | Windows x64 |
 
-Version 1.1.0 targets this specific application build. It checks the original
+Version 1.2.0 targets this specific application build. It checks the original
 archive SHA256, the executable integrity metadata, and both native integration
 points before patching its isolated copy. Newer Codex builds are not currently
 supported; do not downgrade a working official installation to force a match.
@@ -95,8 +113,8 @@ Uninstall keeps the isolated profile and appearance preferences. Updating
 requires uninstalling the old application copy before installing a compatible
 new release.
 
-When upgrading from 1.0.0, fully exit Glass Effect, uninstall its old application
-copy, then install 1.1.0. The existing profile and saved preference keys are kept.
+When upgrading from 1.0.0 or 1.1.0, fully exit Glass Effect, uninstall its old application
+copy, then install 1.2.0. The existing profile and saved preference keys are kept.
 **Body transparency** uses the former workspace value for all permanent panes.
 **Floating sidebar transparency** uses the saved sidebar value only when that
 sidebar appears as a floating panel. The composer value stays independent.
@@ -112,7 +130,8 @@ The customization has no npm dependencies. Contributors need Node.js 18+,
 Windows PowerShell, and the Windows .NET Framework compiler.
 
 ```powershell
-node --test tests/patch.test.cjs
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\native\Build.ps1
+node --test tests/*.test.cjs
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Build.ps1
 ```
 

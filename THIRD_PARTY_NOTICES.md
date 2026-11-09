@@ -1,7 +1,7 @@
 # Third-party software
 
 This repository and its installer distribute only the customization source,
-installation scripts, and installer bootstrap written for this project. They
+installation scripts, native sampler, and installer bootstrap written for this project. They
 do not contain OpenAI Codex, ChatGPT, Electron, a Node.js runtime, account
 credentials, browser profiles, conversations, or bundled OpenAI assets.
 

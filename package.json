@@ -1,14 +1,14 @@
 {
   "name": "glass-effect",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
-  "description": "A connected clear-glass workspace for a compatible OpenAI Codex Windows client, with a floating composer and synchronized body transparency.",
+  "description": "Adaptive clear glass for the Codex Windows client, with automatic background detection and responsive reading controls.",
   "license": "MIT",
   "engines": {
     "node": ">=18"
   },
   "scripts": {
-    "test": "node --test tests/patch.test.cjs",
+    "test": "node --test tests/*.test.cjs",
     "check": "node --check scripts/patch.cjs"
   }
 }
